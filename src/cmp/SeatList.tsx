@@ -4,7 +4,7 @@ import { SeatPreview } from "./SeatPreview";
 interface Props {
   seats: (Seat | null)[][];
   onSelectSeat: (seat: Seat | null) => void;
-  onMouseDown: (seat: Seat | null) => void;
+  onMouseDown: (ev:React.MouseEvent|React.TouchEvent,seat: Seat | null) => void;
   isMouseDown: boolean;
   selectedSeats: Seat[];
 }

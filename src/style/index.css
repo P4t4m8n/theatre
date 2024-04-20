@@ -64,7 +64,8 @@ li {
 }
 
 .gap,
-.seat,.reserved {
+.seat,
+.reserved {
   max-width: 2rem;
   min-width: 1rem;
   aspect-ratio: 0.8;
@@ -137,22 +138,32 @@ h3:nth-of-type(3)::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  height: 400px;
-  aspect-ratio: 1;
-  position: fixed;
+  position: absolute;
   inset: 0;
-  top: -10%;
-  margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 80%;
+  aspect-ratio: 1;
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5), -3px 1px 28px #00000043;
   padding: 50px;
   background-color: rgb(236, 239, 236);
   border: solid 3px hsl(230, 100%, 85%);
   border-radius: 10px;
   width: fit-content;
-  li {
-    gap: 1rem;
-    display: flex;
+  ul {
+    overflow: scroll;
+    width: 100%;
+    overflow-x: hidden;
+    li {
+      gap: 1rem;
+      display: flex;
+      h4,
+      h5 {
+        line-height: 1.5;
+        margin: 0;
+      }
+    }
   }
 }
 body:has(.modal) {
@@ -165,3 +176,38 @@ body:has(.modal) {
     pointer-events: none;
   }
 }
+
+.user-msg {
+  position: fixed; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  bottom: -100px; 
+  width: 90%; 
+  max-width: 400px; 
+  padding: 16px;
+  background-color: #f4f4f4;
+  color: #333; 
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  z-index: 1000; 
+  animation: slideInAndOut 4s ease-in-out forwards; 
+}
+
+.user-msg.success {
+  background-color: rgb(27, 139, 34); 
+}
+
+.user-msg.error {
+  background-color: rgb(204, 0, 0); 
+}
+
+@keyframes slideInAndOut {
+  0%, 100% {
+    bottom: -100px; 
+  }
+  10%, 90% {
+    bottom: 30px; 
+  }
+}
+

@@ -35,7 +35,7 @@ async function fetchTheatre(): Promise<(Seat | null)[][] | undefined> {
   }
 }
 
-async function update(seats: Seat[]): Promise<undefined> {
+async function update(seats: Seat[]): Promise<(Seat | null)[][] | undefined> {
   try {
     const theatre = await fetchTheatre();
     if (!theatre) throw new Error();
@@ -44,6 +44,7 @@ async function update(seats: Seat[]): Promise<undefined> {
       theatre[coords.i][coords.j] = seat;
     });
     _save(THEATRE_DB, theatre);
+    return theatre;
   } catch (error) {
     console.error(error);
   }

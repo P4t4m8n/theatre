@@ -3,7 +3,7 @@ import { Seat } from "../service/seat.service";
 interface Props {
   seat: Seat | null;
   onSelectSeat: (seat: Seat | null) => void;
-  onMouseDown: (seat: Seat | null) => void;
+  onMouseDown: (ev:React.MouseEvent|React.TouchEvent,seat: Seat | null) => void;
   isMouseDown: boolean;
   selected: boolean;
 }
@@ -30,7 +30,7 @@ export function SeatPreview({
 
   return (
     <li
-      onMouseDown={() => onMouseDown(seat)}
+      onMouseDown={(ev) => onMouseDown(ev,seat)}
       onMouseEnter={handleMouseEnter}
       className={className}
     ></li>

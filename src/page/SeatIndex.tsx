@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Seat, seatService } from "../service/seat.service";
 import { SeatList } from "../cmp/SeatList";
 import { SeatModal } from "../cmp/SeatModal";
+import { showErrorMsg, showSuccessMsg } from "../service/event.bus";
 
 export function SeatIndex() {
   const [seats, setSeats] = useState<(Seat | null)[][]>([]);
@@ -24,8 +25,12 @@ export function SeatIndex() {
     }
   };
 
-  const handleMouseDown = (seat: Seat | null) => {
-    if (isMouseDown || !seat || !seat.isAvailable) return;
+  const handleMouseDown = (
+    ev: React.MouseEvent | React.TouchEvent,
+    seat: Seat | null
+  ) => {
+    ev.preventDefault();
+    if (!seat || !seat.isAvailable) return;
 
     setIsMouseDown(true);
     toggleSeatSelection(seat);
@@ -49,14 +54,21 @@ export function SeatIndex() {
 
   const bookSeats = async () => {
     if (!selectedSeats) return;
-    selectedSeats.forEach((seat) => (seat.isAvailable = false));
+    const seatsToSave = selectedSeats.map((seat) => ({
+      ...seat,
+      isAvailable: false,
+    }));
     try {
-      await seatService.update(selectedSeats);
+      const _seats = await seatService.update(seatsToSave);
+      if (_seats) setSeats(_seats);
+      showSuccessMsg('Seats booked')
+
     } catch (error) {
       console.error(error);
+      showErrorMsg('Seats failed to book')
     } finally {
       setOpen(false);
-      // loadItems();
+      setSelectedSeats([]);
     }
   };
 
@@ -85,6 +97,7 @@ export function SeatIndex() {
           setOpen={setOpen}
           seats={selectedSeats}
           bookSeats={bookSeats}
+          setSelectedSeats={setSelectedSeats}
         />
       )}
     </div>

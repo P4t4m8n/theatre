@@ -83,6 +83,11 @@ li {
   background-color: inherit;
 }
 
+.selected {
+  background-color: var(--bg-red-dark);
+  border-color: var(--border-red);
+}
+
 .seats-type {
   display: flex;
   gap: 1rem;

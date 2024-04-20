@@ -1,5 +1,5 @@
 import { storageService } from "./storge.service";
-import { makeLorem, make_id } from "./util.service";
+import { makeLorem, makeId } from "./util.service";
 
 export interface ItemModal {
   id: string;
@@ -33,7 +33,7 @@ const _loadItems = () => {
 };
 
 const _createItem = () => {
-  const id = make_id();
+  const id = makeId();
   return {
     id,
     img: `https://robohash.org/${id}.png`,

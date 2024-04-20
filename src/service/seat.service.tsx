@@ -8,7 +8,7 @@ interface LayoutCell {
 }
 
 export interface Seat {
-  loc: string;
+  id: string;
   price: number;
   isAvailable: boolean;
 }
@@ -16,8 +16,9 @@ export interface Seat {
 export const SEAT = "seat";
 const THEATRE_DB = "theatre_db";
 
-export const SeatService = {
+export const seatService = {
   fetchTheatre,
+  update,
 };
 
 async function fetchTheatre(): Promise<(Seat | null)[][] | undefined> {
@@ -29,6 +30,15 @@ async function fetchTheatre(): Promise<(Seat | null)[][] | undefined> {
     return theatre;
   } catch (error) {
     console.error("Error fetching items:", error);
+  }
+}
+
+async function update(seat: Seat) {
+  try {
+    const updatedSeat = await storageService.put(THEATRE_DB, seat);
+    return updatedSeat;
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -94,7 +104,7 @@ function _createRow(layoutCell: LayoutCell, idx: number): (Seat | null)[] {
     else if (i > layoutCell.end) row.push(null);
     else
       row.push({
-        loc: idx.toString().padStart(2, "0") + i.toString().padStart(2, "0"),
+        id: idx.toString().padStart(2, "0") + i.toString().padStart(2, "0"),
         price: parseFloat(faker.commerce.price()),
         isAvailable: true,
       });

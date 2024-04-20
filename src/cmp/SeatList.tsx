@@ -3,17 +3,18 @@ import { SeatPreview } from "./SeatPreview";
 
 interface Props {
   seats: (Seat | null)[][];
+  onSelectSeat: (seat: Seat | null) => void;
 }
 
-export function SeatList({ seats }: Props) {
+export function SeatList({ seats, onSelectSeat }: Props) {
   return (
     <ul>
       {seats.map((row, idx) => (
-        <li className="row" key={idx}>
+        <div className="row" key={idx}>
           {row.map((col, jdx) => (
-            <SeatPreview seat={col} key={jdx} />
+            <SeatPreview onSelectSeat={onSelectSeat} seat={col} key={jdx} />
           ))}
-        </li>
+        </div>
       ))}
     </ul>
   );

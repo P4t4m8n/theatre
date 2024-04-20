@@ -25,7 +25,9 @@ async function fetchTheatre(): Promise<(Seat | null)[][] | undefined> {
   let theatre: (Seat | null)[][] = [];
   try {
     theatre = await storageService.query(THEATRE_DB);
-    if (!theatre || theatre.length <= 0) theatre = _createTheatre();
+    if (!theatre || theatre.length <= 0) {
+      theatre = _createTheatre();
+    }
 
     return theatre;
   } catch (error) {
@@ -33,14 +35,32 @@ async function fetchTheatre(): Promise<(Seat | null)[][] | undefined> {
   }
 }
 
-async function update(seat: Seat) {
+async function update(seats: Seat[]): Promise<undefined> {
   try {
-    const updatedSeat = await storageService.put(THEATRE_DB, seat);
-    return updatedSeat;
+    const theatre = await fetchTheatre();
+    if (!theatre) throw new Error();
+    seats.forEach((seat) => {
+      const coords = _stringToCoords(seat.id);
+      theatre[coords.i][coords.j] = seat;
+    });
+    _save(THEATRE_DB, theatre);
   } catch (error) {
     console.error(error);
   }
 }
+
+function _save<T>(entityType: string, entities: T[]) {
+  localStorage.setItem(entityType, JSON.stringify(entities));
+}
+
+const _stringToCoords = (input: string) => {
+  const str = input.trim();
+  const midIndex = Math.floor(str.length / 2);
+  const i = parseInt(input.substring(0, midIndex), 10);
+  const j = parseInt(input.substring(midIndex), 10);
+
+  return { i, j };
+};
 
 export const _createTheatre = () => {
   const layout = [

@@ -22,6 +22,7 @@ main {
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .container {
@@ -63,20 +64,20 @@ li {
 }
 
 .gap,
-.seat {
+.seat,.reserved {
   max-width: 2rem;
   min-width: 1rem;
   aspect-ratio: 0.8;
   border-left: var(--spacing-4) solid transparent;
   border-bottom: var(--spacing-4) solid transparent;
   border-right: var(--spacing-4) solid transparent;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .seat {
   background-color: var(--bg-gray);
   border-color: var(--border-gray);
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
 }
 
 .gap {
@@ -86,6 +87,11 @@ li {
 .selected {
   background-color: var(--bg-red-dark);
   border-color: var(--border-red);
+}
+
+.reserved {
+  background-color: var(--bg-light-gray);
+  border-color: var(--border-light-gray);
 }
 
 .seats-type {
@@ -125,4 +131,37 @@ h3:nth-of-type(2)::before {
 h3:nth-of-type(3)::before {
   background-color: var(--bg-red-dark);
   border-color: var(--border-red);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 400px;
+  aspect-ratio: 1;
+  position: fixed;
+  inset: 0;
+  top: -10%;
+  margin: auto;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5), -3px 1px 28px #00000043;
+  padding: 50px;
+  background-color: rgb(236, 239, 236);
+  border: solid 3px hsl(230, 100%, 85%);
+  border-radius: 10px;
+  width: fit-content;
+  li {
+    gap: 1rem;
+    display: flex;
+  }
+}
+body:has(.modal) {
+  .modal,
+  .modal * {
+    pointer-events: all;
+  }
+
+  :not(.modal, .modal *) {
+    pointer-events: none;
+  }
 }

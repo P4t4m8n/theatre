@@ -4,7 +4,6 @@ export const storageService = {
   query,
   get,
   post,
-  put,
   remove,
   save,
 };
@@ -42,22 +41,6 @@ async function post<T>(entityType: string, newEntity: T): Promise<T> {
   return newEntity;
 }
 
-async function put<T extends EntityId>(
-  entityType: string,
-  updatedEntity: T
-): Promise<T> {
-  const entities = await query<T[]>(entityType);
-  for (let i = 0; i < entities.length; i++)
-    for (let j = 0; j < entities.length; j++) {
-      if (!entities[i][j]) continue;
-      if (entities[i][j].id === updatedEntity.id) {
-        entities[i][j] = updatedEntity;
-        save(entityType, entities);
-      }
-    }
-  return updatedEntity;
-}
-
 async function remove<T extends EntityId>(
   entityType: string,
   entityId: string
@@ -72,6 +55,7 @@ async function remove<T extends EntityId>(
   save(entityType, entities);
 }
 
-function save<T>(entityType: string, entities: T[]) {
+async function save<T>(entityType: string, entities: T[]) {
+  console.log("entities:", entities);
   localStorage.setItem(entityType, JSON.stringify(entities));
 }
